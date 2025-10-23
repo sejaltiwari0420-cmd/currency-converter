@@ -1,0 +1,35 @@
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.Scanner;
+import org.json.JSONObject;
+
+public class CurrencyConverter {
+
+    // The complete URL for the currency conversion API
+    private static final String API_URL = "https://api.exchangerate-api.com/v4/latest/";
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter base currency (e.g., INR, USD): ");
+        String baseCurrency = scanner.nextLine().toUpperCase();
+
+        System.out.println("Enter target currency (e.g., USD, EUR): ");
+        String targetCurrency = scanner.nextLine().toUpperCase();
+
+        System.out.println("Enter amount to convert: ");
+        double amount = scanner.nextDouble();
+
+        try {
+            // Call the conversion method and print the result
+            double convertedAmount = convertCurrency(baseCurrency, targetCurrency, amount);
+            System.out.printf("Result: %.2f %s = %.2f %s%n", amount, baseCurrency, convertedAmount, targetCurrency);
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Error fetching exchange rates. Please check your currency codes and network connection.");
+            // e.printStackTrace(); // Uncomment for detailed error logs
+        } catch (Exception e) {
+            System.out.println("An error occurred. The target currency code might be invalid.");
+        }
